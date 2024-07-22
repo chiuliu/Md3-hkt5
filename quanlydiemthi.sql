@@ -153,6 +153,62 @@ create view AVERAGE_MARK_VIEW as
     from mark m
          inner join student s on m.studentId = s.studentId
     group by s.studentId, s.studentName;
+    
+-- Tạo PROC_INSERTSTUDENT dùng để thêm mới 1 học sinh bao gồm tất cả thông tin học sinh đó
+
+    delimiter //
+    create procedure PROC_INSERTSTUDENT(
+        in studentId_in varchar(4),
+        in studentName_in varchar(100) ,
+        in birthday_in date,
+        in gender_in bit,
+		in address_in text,
+        in phoneNumber_in varchar(45)
+    )
+    begin
+        insert into student(studentId, studentName, birthday, gender, address, phoneNumber)
+            value (studentId_in, studentName_in, birthday_in, gender_in, address_in, phoneNumber_in);
+    end //
+    delimiter ;
+    
+call PROC_INSERTSTUDENT('S011', 'Lê Quang Tiệp', ('1997/05/09'), 1, 'Bắc Ninh', '0333666999'); 
+select * from student;
+
+-- Tạo PROC_UPDATESUBJECT dùng để cập nhật tên môn học theo mã môn học
+
+ delimiter //
+    create procedure PROC_UPDATESUBJECT(
+        in subjectId_in VARCHAR(4),
+        in subjectName_in VARCHAR(45)
+    )
+    begin
+        update subject
+            set subjectName = subjectName_in
+        where subjectId = subjectId_in;
+    end //
+delimiter ; 
+
+call PROC_UPDATESUBJECT('MH03','GDCD')
+
+
+-- Tạo PROC_DELETEMARK dùng để xoá toàn bộ điểm các môn học theo mã học sinh
+
+delimiter //
+    create procedure PROC_DELETEMARK(
+        in studentId_in varchar(4)
+    )
+    begin
+        delete from mark
+            where studentId = studentId_in;
+    end //
+-- delimiter ;
+
+
+call PROC_DELETEMARK ('S011');
+select * from student;
+
+    
+    
  
 
 	
