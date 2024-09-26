@@ -205,7 +205,7 @@ delimiter //
 
 
 call PROC_DELETEMARK ('S011');
-select * from student;
+-- select * from student;
 
     
     
